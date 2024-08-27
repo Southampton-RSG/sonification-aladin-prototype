@@ -4,10 +4,158 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HTML 5 Boilerplate</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Gaia Sonification</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+
+    <!-- https://tonejs.github.io/ -->
+    <script type = "text/javascript" src="http://unpkg.com/tone"></script>
+    
+    <!-- http://aladin.cds.unistra.fr/AladinLite/doc/ -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.js" charset="utf-8"></script>
   </head>
+
   <body>
-    <script src="index.js"></script>
+    <div id="aladinLiteDiv" style="width:800px;height:640px;"></div>
+
+    <input id="DSS" type="radio" name="survey" value="P/DSS2/color"><label for="DSS">DSS color<label>
+    <input id="DSS-blue" type="radio" name="survey" value="P/DSS2/blue"><label for="DSS-blue">DSS blue<label>
+    <input id="2MASS" type="radio" name="survey" value="P/2MASS/color"><label for="2MASS">2MASS<label>
+    <input id="allwise" type="radio" name="survey" value="P/allWISE/color"><label for="allwise">AllWISE<label>
+    <input id="glimpse" type="radio" name="survey" value="P/GLIMPSE360"><label for="glimpse">GLIMPSE 360<label>
+     
+    <script type="text/javascript">
+      // ----------------
+      // Initialise the Synthesiser used to play the parallax notes
+      // The inner Synth is the actual instrument, the polysynth is a wrapper to let multiple play at once.
+      // Settings from: https://tonejs.github.io/examples/monoSynth
+      // ----------------
+      const synth = new Tone.PolySynth(
+        Tone.MonoSynth, {
+          volume: -8,
+          oscillator: {
+            type: "square8",
+          },
+          envelope: {
+            attack: 0.05,
+            decay: 0.3,
+            sustain: 0.4,
+            release: 0.8,
+          },
+          filterEnvelope: {
+            attack: 0.001,
+            decay: 0.7,
+            sustain: 0.1,
+            release: 0.8,
+            baseFrequency: 300,
+            octaves: 4,
+          },
+			  }
+      ).toDestination();
+
+      // ----------------
+      // https://en.wikipedia.org/wiki/Piano_key_frequencies
+      // Piano goes from key 1-88, parallax mooostly goes from ~0-20 but hits 40-50-160 occasionally!
+      // Hmmm, this is a problem.
+      // ----------------
+      const PARALLAX_KEY_BASE = 1;
+      const PARALLAX_KEY_MULT = 1;
+      function pianoKeyNumberToFreq(key_number) {
+        return 2**((key_number-49)/12) * 440.0;
+      }
+
+      // ----------------
+      // Basic scaler from parallax into a playable frequency.
+      // ----------------
+      const VALUE_BASE = 0;
+      const VALUE_MULT = 30;
+      function valueScaleToFreq(value) {
+        return VALUE_BASE + VALUE_MULT * value;
+      }
+
+      // ----------------
+      // Central parallax to frequency converter (easy to tweak without editing logic below)
+      // Handles low negative parallaxes (which are just down to error on the measurement)
+      // ----------------
+      function parallaxToFreq(parallax) {
+        if (parallax < 0) {
+          parallax = 0;
+        }
+        // return pianoKeyNumberToFreq(PARALLAX_KEY_BASE+PARALLAX_KEY_MULT*parallax)
+        return valueScaleToFreq(parallax);
+      }
+
+      // ----------------
+      // There are some spurious large negative parallaxes that need removing
+      // ----------------
+      const PARALLAX_NEGATIVE_THRESHOLD = -0.1;
+      function filterGaiaCatalog(source) {
+        return parallax > PARALLAX_NEGATIVE_THRESHOLD;
+      }
+
+      // ----------------
+      // Debug; track the min and max parallax of moused-over sources
+      // ----------------
+      let parallax_max = -999;
+      let parallax_min = 999;
+
+      let aladin;
+      A.init.then(() => {
+        aladin = A.aladin(
+          '#aladinLiteDiv', 
+          {target:'gal center', fov: 50}
+        );
+        
+        var gaiaCatalog = A.catalogHiPS(
+          'http://axel.u-strasbg.fr/HiPSCatService/I/345/gaia2', 
+          {sourceSize: 12, name: 'Gaia', style: 'plus', filter: filterGaiaCatalog}
+        );
+        aladin.addCatalog(gaiaCatalog);        
+
+        aladin.on('objectHovered', function(object) {
+          if (object) {
+            // ----------------
+            // Debug/testing code
+            // ----------------
+            console.log(object);
+
+            // ----------------
+            // This block was written for if we wanted to store/generate sounds for each source elsewhere.
+            // ----------------
+            // var sourceId = 'audioElement'+object.data.source_id;
+            // var audioElement = document.getElementById(sourceId);
+            // if (!audioElement) {
+            //   var audioElement = document.createElement('audio');
+            //   audioElement.setAttribute('id', sourceId);
+            //   audioElement.setAttribute('src', "https://www.mywebsite.soton.ac.uk/api/source/"+object.data.source_id);
+            // }
+            // audioElement.play();
+
+            // ----------------
+            // Play a tone based on the parallax of the source
+            // ----------------
+            if (object.data.parallax) {
+              parallax = Number(object.data.parallax);
+              if(parallax > parallax_max) {
+                parallax_max = parallax;
+              }
+              if (parallax < parallax_min) {
+                parallax_min = parallax;
+              }
+              synth.triggerAttackRelease(
+                parallaxToFreq(parallax),
+                 0.1
+              );
+              console.log("Min: "+parallax_min+", max: "+parallax_max,": "+parallax);
+            }
+          }
+        });
+      });  
+
+      $('input[name=survey]').change(function() {
+        aladin.setImageSurvey($(this).val());
+      });
+    </script>
+
   </body>
 </html>
