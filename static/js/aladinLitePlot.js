@@ -8,8 +8,7 @@ document.getElementById("startButton").onclick = function() {
   // Hide the start button, show the map
   // ----------------
   Tone.start();
-  document.getElementById("startButton").style.display = "none";
-  document.getElementById("aladinLiteDiv").style.display = "inline-block";
+  document.getElementById("aladinDiv").classList.add("show");
 
   // ----------------
   // Initialise the Synthesiser used to play the parallax notes
@@ -52,6 +51,7 @@ document.getElementById("startButton").onclick = function() {
   ).toDestination();
 };
 
+
 // ----------------
 // https://en.wikipedia.org/wiki/Piano_key_frequencies
 // Piano goes from key 1-88, parallax mooostly goes from ~0-20 but hits 40-50-160 occasionally!
@@ -62,6 +62,7 @@ const KEY_MULT_PARALLAX = 1;
 function pianoKeyNumberToFreq(key_number) {
   return 2**((key_number-49)/12) * 440.0;
 }
+
 
 // ----------------
 // Basic scalers from values into playable frequencies.
@@ -74,6 +75,7 @@ function valueScaleToFreq(value, freq_base, freq_mult) {
   return freq_base + freq_mult * value;
 }
 
+
 // ----------------
 // Central parallax to frequency converter (easy to tweak without editing logic below)
 // Handles low negative parallaxes (which are just down to error on the measurement)
@@ -85,6 +87,7 @@ function parallaxToFreq(parallax) {
   return valueScaleToFreq(parallax, FREQ_BASE_PARALLAX, FREQ_MULT_PARALLAX);
 }
 
+
 // ----------------
 // Scales proper motion to frequency.
 // ----------------
@@ -92,49 +95,84 @@ function properMotionToFreq(proper_motion) {
   return valueScaleToFreq(proper_motion, FREQ_BASE_PROPER_MOTION, FREQ_MULT_PROPER_MOTION);
 }
 
+
 // ----------------
 // There are some spurious large negative parallaxes in the catalog that need removing
 // ----------------
 const PARALLAX_NEGATIVE_THRESHOLD = -0.1;
 function filterGaiaCatalog(source) {
-  return source.data.parallax > PARALLAX_NEGATIVE_THRESHOLD;
+  return (source.data.parallax > PARALLAX_NEGATIVE_THRESHOLD)
+  // Considered filtering by phot_g_mean_flux or others
+  // https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html
 }
 
+
 // ----------------
-// Debug; track the min and max parallax of moused-over sources
+// Sonify the object
 // ----------------
-let parallax_max = -999;
-let parallax_min = 999;
-let lum_max = -999;
-let lum_min = 999;
-let pm_max = -999;
-let pm_min = 999;
+function sonifySource(source) {
+  if (source.data && source.data.parallax) {
+    var parallax = Number(source.data.parallax);
+    // var luminosity = Number(source.data.lum_val);
+    var proper_motion = Math.sqrt(Number(source.data.pmra)**2 + Number(source.data.pmdec)**2);
+    
+    synth_mono.triggerAttackRelease(
+      parallaxToFreq(parallax),
+      0.3
+    );
+    synth_metal.triggerAttackRelease(
+      properMotionToFreq(proper_motion),
+      0.1
+    )
+
+    // ----------------
+    // This block was written for if we wanted to store/generate sounds for each source elsewhere.
+    // ----------------
+    // var sourceId = 'audioElement'+object.data.source_id;
+    // var audioElement = document.getElementById(sourceId);
+    // if (!audioElement) {
+    //   var audioElement = document.createElement('audio');
+    //   audioElement.setAttribute('id', sourceId);
+    //   audioElement.setAttribute('src', "https://www.mywebsite.soton.ac.uk/api/source/"+object.data.source_id);
+    // }
+    // audioElement.play();
+  }
+}
+
 
 // ----------------
 // Initialise Aladin, load and filter Gaia, then set up the mouseover code
 // ----------------
 let aladin;
+let fov_component;
+
+
 A.init.then(() => {
   aladin = A.aladin(
     '#aladinLiteDiv', 
     {
-      target:'gal center', fov: 50, 
+      target:'gal center', fov: 50, cooFrame: 'galactic',
       showLayersControl: false, showStatusBar: false, showProjectionControl: false,
       showCooLocation: false, showReticle: false, showFrame: false, showCooGrid: false, 
     }
   );
+ 
 
   // ----------------
   // Define custom draw function
   // We can use this to e.g. filter by size relative to FOV
   // ----------------
   var drawFunction = function(source, canvasCtx, viewParams) {
+
       canvasCtx.beginPath();
-      canvasCtx.arc(source.x, source.y, 6, 0, 2 * Math.PI, false);
+      canvasCtx.arc(
+        source.x, source.y, 6, 
+        0, 2 * Math.PI, false
+      );
       canvasCtx.closePath();
       canvasCtx.strokeStyle = 'goldenrod';
       canvasCtx.lineWidth = 0.5;
-      canvasCtx.globalAlpha = 0.2,
+      canvasCtx.globalAlpha = 0.75,
       canvasCtx.stroke();
   };
 
@@ -148,74 +186,24 @@ A.init.then(() => {
   );
   aladin.addCatalog(gaiaCatalog);        
 
+  aladin.on('zoomChanged', function(object) {
+    fov_component = Math.cos(object * Math.PI * 2);
+    // gaiaCatalog.reportChange();  // For if we need to update the catalog filters
+  })
+
   aladin.on('objectClicked', function(object) {
-    console.log(object);
+    if (object) {
+      console.log("Clicked: "+object.data.phot_g_mean_flux);
+      console.log(object);
+      sonifySource(object);
+    }
   })
 
   aladin.on('objectHovered', function(object) {
     var parallax, luminosity, proper_motion;
 
     if (object) {
-      // ----------------
-      // Debug/testing code
-      // ----------------
-      console.log(object);
-
-      // ----------------
-      // This block was written for if we wanted to store/generate sounds for each source elsewhere.
-      // ----------------
-      // var sourceId = 'audioElement'+object.data.source_id;
-      // var audioElement = document.getElementById(sourceId);
-      // if (!audioElement) {
-      //   var audioElement = document.createElement('audio');
-      //   audioElement.setAttribute('id', sourceId);
-      //   audioElement.setAttribute('src', "https://www.mywebsite.soton.ac.uk/api/source/"+object.data.source_id);
-      // }
-      // audioElement.play();
-
-      // ----------------
-      // Play a tone based on the parallax of the source
-      // ----------------
-      if (object.data) {
-        if (object.data.parallax) {
-          parallax = Number(object.data.parallax);
-          luminosity = Number(object.data.lum_val);
-          proper_motion = Math.sqrt(Number(object.data.pmra)**2 + Number(object.data.pmdec)**2);
-
-          // ----------------
-          // Tracking the maxima and minima in a lazy way; getting the distribution from the data would be better
-          // ----------------
-          if(parallax > parallax_max) {
-            parallax_max = parallax;
-          }
-          if (parallax < parallax_min) {
-            parallax_min = parallax;
-          }
-          if (luminosity < lum_min) {
-            lum_min = luminosity;
-          }
-          if (luminosity > lum_max) {
-            lum_max = luminosity;
-          }
-          if (proper_motion > pm_max) {
-            pm_max = proper_motion;
-          }
-          if (proper_motion < pm_min) {
-            pm_min = proper_motion;
-          }
-
-          synth_mono.triggerAttackRelease(
-            parallaxToFreq(parallax),
-            0.3
-          );
-          synth_metal.triggerAttackRelease(
-            properMotionToFreq(proper_motion),
-            0.1
-          )
-          console.log("Parallax: "+parallax+", luminosity: "+luminosity+", proper motion: "+proper_motion);
-          console.log("Ranges - parallax: "+parallax_min+" - "+parallax_max+", luminosity: "+lum_min+" - "+lum_max+", proper motion: "+pm_min+" - "+pm_max);
-        }
-      }
+      sonifySource(object);
     }
   });
 });  

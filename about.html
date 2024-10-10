@@ -13,13 +13,6 @@
     <!-- FontAwesome icons -->
     <script src="https://kit.fontawesome.com/92fa7349d3.js" crossorigin="anonymous"></script>
 
-    <!-- https://tonejs.github.io/ -->
-    <script type = "text/javascript" src="https://unpkg.com/tone"></script>
-    
-    <!-- http://aladin.cds.unistra.fr/AladinLite/doc/ -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.js" charset="utf-8"></script>
-
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -50,34 +43,25 @@
         <div>
           <h3 class="float-md-start mb-0">Gaia Soundscapes</h3>
           <nav class="nav nav-masthead justify-content-center float-md-end">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-            <a class="nav-link" href="about.html">About</a>
+            <a class="nav-link" href="index.html">Home</a>
+            <a class="nav-link active" aria-current="page" href="#">About</a>
           </nav>
         </div>
       </header>
 
       <!-- Button to toggle the Aladin div on -->
       <main class="p-3">
-        <div class="collapse show" id="leadDiv">
-          <h1 class="text-outline">
-            Hear the Skies
-          </h1>
-          <p class="lead text-outline">
-            Listen to the data from the European Space Agency's Gaia survey
+        <div class="card card-about">
+          <div class="card-body">
+            <h1 class="card-title">
+                Lorem Ipsum
+            </h1>
+            <p class="card-text">
+                Lorem Ipsum
+            </p>
           </p>
-          <button id="startButton" class="btn btn-lg btn-light fw-bold lead-shadow collapse show" data-bs-toggle="collapse" data-bs-target="#leadDiv">
-            Explore <i class="fa fa-solid fa-satellite-dish"></i>
-          </button>
         </div>
- 
-        <!-- The hidden div that holds the Aladin Lite display -->
-        <div id="aladinDiv" class="collapse">
-          <p class="lead text-outline">
-            Synth noises are <strong>parallax</strong>, and chimes are <strong>proper motion</strong><br/>
-            Higher pitches represent larger values, meaning the star is closer
-          </p>
-          <div id="aladinLiteDiv" style="width: 100%; height: 430px;" class="aladinClass"></div>
-        </div>
+
       </main>    
 
       <!-- Footer with links & attribution -->
