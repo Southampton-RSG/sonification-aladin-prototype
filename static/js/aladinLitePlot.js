@@ -181,7 +181,9 @@ A.init.then(() => {
     {
       // sourceSize: 12, 
       name: 'Gaia', style: 'plus', displayLabel: false,
-      filter: filterGaiaCatalog, shape: drawFunction,
+      filter: filterGaiaCatalog, 
+      shape: drawFunction,
+      onclick: 'showPopup',
     },
   );
   aladin.addCatalog(gaiaCatalog);        

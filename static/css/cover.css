@@ -73,3 +73,8 @@ body {
 .nav-link > img {
   height: 2rem;
 }
+
+
+.aladin-dark-theme {
+  font-family: Arial, Helvetica, sans-serif;
+}
