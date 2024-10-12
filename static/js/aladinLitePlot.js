@@ -137,20 +137,28 @@ function filterGaiaCatalog(source) {
 // ----------------
 // Sonify the object
 // ----------------
+TIME_MULT_FLUX = 0.1;
+TIME_BASE_MONO = 0.3;
+TIME_BASE_METAL= 0.1;
 function sonifySource(source) {
   if (source.data && source.data.parallax) {
+    source_data = source.data;
     var parallax = Number(source.data.parallax);
     // var luminosity = Number(source.data.lum_val);
-    var proper_motion = Math.sqrt(Number(source.data.pmra)**2 + Number(source.data.pmdec)**2);
-    
+
+    var proper_motion = Math.sqrt(Number(source_data.pmra)**2 + Number(source_data.pmdec)**2);
+    var maximum_flux = Math.log10(
+      Math.max(source_data.phot_g_mean_flux, source_data.phot_bp_mean_flux, source_data.phot_rp_mean_flux)
+    );
+
     synth_mono.triggerAttackRelease(
       parallaxToFreq(parallax),
-      0.3
+      TIME_BASE_MONO + (TIME_MULT_FLUX * maximum_flux)
     );
     synth_metal.triggerAttackRelease(
       properMotionToFreq(proper_motion),
-      0.1
-    )
+      TIME_BASE_METAL + (TIME_MULT_FLUX * maximum_flux)
+    );
 
     // ----------------
     // This block was written for if we wanted to store/generate sounds for each source elsewhere.
@@ -166,6 +174,10 @@ function sonifySource(source) {
   }
 }
 
+
+function testOnClick(source) {
+  console.log("onClick:", source)
+}
 
 // ----------------
 // Initialise Aladin, load and filter Gaia, then set up the mouseover code
@@ -189,28 +201,68 @@ A.init.then(() => {
   // Define custom draw function
   // We can use this to e.g. filter by size relative to FOV
   // ----------------
-  var drawFunction = function(source, canvasCtx, viewParams) {
+  DEGREES_30  = Math.PI * 1 / 6;
+  DEGREES_45  = Math.PI * 1.5 / 6;
+  DEGREES_60  = Math.PI * 2 / 6;
 
-      canvasCtx.beginPath();
-      canvasCtx.arc(
-        source.x, source.y, 6, 
-        0, 2 * Math.PI, false
-      );
-      canvasCtx.closePath();
-      canvasCtx.strokeStyle = 'goldenrod';
-      canvasCtx.lineWidth = 0.5;
-      canvasCtx.globalAlpha = 0.75,
-      canvasCtx.stroke();
+  DEGREES_120 = Math.PI * 4 / 6;
+  DEGREES_135 = Math.PI * 4.5 / 6;
+  DEGREES_150 = Math.PI * 5 / 6;
+
+  DEGREES_210 = Math.PI * 7 / 6;
+  DEGREES_225 = Math.PI * 7.5 / 6;
+  DEGREES_240 = Math.PI * 8 / 6;
+
+  DEGREES_300 = Math.PI * 10 / 6;
+  DEGREES_315 = Math.PI * 10.5 / 6;
+  DEGREES_330 = Math.PI * 11 / 6;
+
+  MARKER_RADIUS = 6;
+  MARKER_INNER = 1;
+
+  var drawFunction = function(source, canvasCtx, viewParams) {
+    canvasCtx.strokeStyle = 'goldenrod';
+    canvasCtx.lineWidth = 0.5;
+    canvasCtx.globalAlpha = 0.25;
+  
+    canvasCtx.beginPath();
+    canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_30,  DEGREES_45);
+    canvasCtx.lineTo(source.x+MARKER_INNER, source.y+MARKER_INNER);
+    canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_45,  DEGREES_60);
+    canvasCtx.closePath();
+    canvasCtx.stroke();
+
+    canvasCtx.beginPath();
+    canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_120, DEGREES_135);
+    canvasCtx.lineTo(source.x-MARKER_INNER, source.y+MARKER_INNER);
+    canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_135, DEGREES_150);
+    canvasCtx.closePath();
+    canvasCtx.stroke();
+
+    canvasCtx.beginPath();
+    canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_210, DEGREES_225);
+    canvasCtx.lineTo(source.x-MARKER_INNER, source.y-MARKER_INNER);
+    canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_225, DEGREES_240);
+    canvasCtx.closePath();
+    canvasCtx.stroke();
+
+    canvasCtx.beginPath();
+    canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_300, DEGREES_315);
+    canvasCtx.lineTo(source.x+MARKER_INNER, source.y-MARKER_INNER);
+    canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_315, DEGREES_330);
+    canvasCtx.closePath();
+    canvasCtx.stroke();
+
   };
 
   var gaiaCatalog = A.catalogHiPS(
     'http://axel.u-strasbg.fr/HiPSCatService/I/345/gaia2', 
     {
-      // sourceSize: 12, 
-      name: 'Gaia', style: 'plus', displayLabel: false,
+      name: 'Gaia',
+      displayLabel: false, 
+      limit: 50,  // Not working?
       filter: filterGaiaCatalog, 
       shape: drawFunction,
-      onClick: 'showPopup',
     },
   );
   aladin.addCatalog(gaiaCatalog);        
@@ -224,18 +276,8 @@ A.init.then(() => {
     if (object) {
       console.log("Clicked: "+object.data.phot_g_mean_flux);
       console.log(object);
-      sonifySource(object);    
+      sonifySource(object);
 
-      // ----------------
-      // Modified version of the 'show popup' code from:
-      // https://github.com/cds-astro/aladin-lite/blob/f79d47d61e0418f9b4487bac32da90cb127e3191/src/js/Aladin.js#L2646
-      // ----------------
-
-      // aladin.popup.setTitle("Popup Title");
-      // aladin.popup.setText("Popup Text");
-
-      // aladin.popup.setSource(object.marker);
-      // aladin.popup.show();
     }
   })
 
