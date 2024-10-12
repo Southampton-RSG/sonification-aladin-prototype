@@ -53,44 +53,71 @@ document.getElementById("startButton").onclick = function() {
 
 
 // ----------------
-// https://en.wikipedia.org/wiki/Piano_key_frequencies
-// Piano goes from key 1-88, parallax mooostly goes from ~0-20 but hits 40-50-160 occasionally!
-// Hmmm, this is a problem.
-// ----------------
-const KEY_BASE_PARALLAX = 1;
-const KEY_MULT_PARALLAX = 1;
-function pianoKeyNumberToFreq(key_number) {
-  return 2**((key_number-49)/12) * 440.0;
-}
-
-
-// ----------------
 // Basic scalers from values into playable frequencies.
 // ----------------
 const FREQ_BASE_PARALLAX = 0;
 const FREQ_MULT_PARALLAX = 30;
 const FREQ_BASE_PROPER_MOTION = 0;
 const FREQ_MULT_PROPER_MOTION = 20;
+const PIANO_BASE_PARALLAX = 1;
+const PIANO_MULT_PARALLAX = 1;
+
+
+/*******************************************************************************
+ * Scales an input 'piano key number' into an audio frequency.
+ * 
+ * Piano key numbers go from 1-88, so we need to clamp the 'proposed' key number
+ * to a valid one.
+ * @link https://en.wikipedia.org/wiki/Piano_key_frequencies
+ *  
+ * @param {Number} value      The value, a physical quantity.
+ * @param {Number} key_base   The 'base' key for that value.
+ * @param {Number} key_mult   The multiplier from that value to the key.
+ * @returns                   The corresponding audio frequency.
+ *******************************************************************************/
+function valueScaleToPianoFreq(value, key_base, key_mult) {
+  let key_number = key_base + key_mult * value;
+  key_number = Math.min(Math.max(key_number, 1), 88);
+  return 2**((key_number-49)/12) * 440.0;
+}
+
+
+/**
+ * Scales an input value into a sound frequency.
+ * 
+ * @param {Number} value      The value, a physical quantity.
+ * @param {Number} freq_base  The 'base frequency' for that value.
+ * @param {Number} freq_mult  The multiplier from the value to the frequency.
+ * @returns                   A scaled audio frequency.
+ *******************************************************************************/
 function valueScaleToFreq(value, freq_base, freq_mult) {
   return freq_base + freq_mult * value;
 }
 
 
-// ----------------
-// Central parallax to frequency converter (easy to tweak without editing logic below)
-// Handles low negative parallaxes (which are just down to error on the measurement)
-// ----------------
+/*******************************************************************************
+ * Scales an input parallax into a sound frequency.
+ * 
+ * Handles low negative parallaxes (which are just down to error on the measurement).
+ * @see valueScaleToFreq
+ * 
+ * @param {Number} parallax   The parallax of a source, clamped to minimum 0.
+ * @returns                   A scaled audio frequency.
+ *******************************************************************************/
 function parallaxToFreq(parallax) {
-  if (parallax < 0) {
-    parallax = 0;
-  }
-  return valueScaleToFreq(parallax, FREQ_BASE_PARALLAX, FREQ_MULT_PARALLAX);
+  return valueScaleToFreq(Math.max(0, parallax), FREQ_BASE_PARALLAX, FREQ_MULT_PARALLAX);
 }
 
 
-// ----------------
-// Scales proper motion to frequency.
-// ----------------
+
+/*******************************************************************************
+ * Scales an input proper motion into a sound frequency.
+ * 
+ * @see valueScaleToFreq
+ * 
+ * @param {Number} proper_motion   The proper motion of a source.
+ * @returns                        A scaled audio frequency.
+ *******************************************************************************/
 function properMotionToFreq(proper_motion) {
   return valueScaleToFreq(proper_motion, FREQ_BASE_PROPER_MOTION, FREQ_MULT_PROPER_MOTION);
 }
@@ -183,7 +210,7 @@ A.init.then(() => {
       name: 'Gaia', style: 'plus', displayLabel: false,
       filter: filterGaiaCatalog, 
       shape: drawFunction,
-      onclick: 'showPopup',
+      onClick: 'showPopup',
     },
   );
   aladin.addCatalog(gaiaCatalog);        
@@ -197,7 +224,18 @@ A.init.then(() => {
     if (object) {
       console.log("Clicked: "+object.data.phot_g_mean_flux);
       console.log(object);
-      sonifySource(object);
+      sonifySource(object);    
+
+      // ----------------
+      // Modified version of the 'show popup' code from:
+      // https://github.com/cds-astro/aladin-lite/blob/f79d47d61e0418f9b4487bac32da90cb127e3191/src/js/Aladin.js#L2646
+      // ----------------
+
+      // aladin.popup.setTitle("Popup Title");
+      // aladin.popup.setText("Popup Text");
+
+      // aladin.popup.setSource(object.marker);
+      // aladin.popup.show();
     }
   })
 
