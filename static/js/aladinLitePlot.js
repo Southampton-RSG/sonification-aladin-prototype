@@ -127,8 +127,16 @@ function properMotionToFreq(proper_motion) {
 // There are some spurious large negative parallaxes in the catalog that need removing
 // ----------------
 const PARALLAX_NEGATIVE_THRESHOLD = -0.1;
+
+/*******************************************************************************
+ * 
+ * @param {Source} source 
+ * @returns 
+ *******************************************************************************/
 function filterGaiaCatalog(source) {
-  return (source.data.parallax > PARALLAX_NEGATIVE_THRESHOLD)
+  if (source.data.parallax > PARALLAX_NEGATIVE_THRESHOLD) {
+    return true
+  }
   // Considered filtering by phot_g_mean_flux or others
   // https://gea.esac.esa.int/archive/documentation/GDR2/Gaia_archive/chap_datamodel/sec_dm_main_tables/ssec_dm_gaia_source.html
 }
@@ -140,6 +148,11 @@ function filterGaiaCatalog(source) {
 TIME_MULT_FLUX = 0.1;
 TIME_BASE_MONO = 0.3;
 TIME_BASE_METAL= 0.1;
+/*******************************************************************************
+ * Sonifies a source.
+ * 
+ * @param {source}  Aladin.source to be sonified.
+ *******************************************************************************/
 function sonifySource(source) {
   if (source.data && source.data.parallax) {
     source_data = source.data;
@@ -171,12 +184,24 @@ function sonifySource(source) {
     //   audioElement.setAttribute('src', "https://www.mywebsite.soton.ac.uk/api/source/"+object.data.source_id);
     // }
     // audioElement.play();
+
+    let screenPos = aladin.world2pix(source.ra, source.dec);
+		let pulseDiv = document.createElement("div");
+		pulseDiv.setAttribute('class','pulse'), document.getElementById('aladinLiteDiv').appendChild(pulseDiv), pulseDiv.style.top=screenPos[1]+'px',pulseDiv.style.left=screenPos[0]+'px';
+    setTimeout(function(){pulseDiv.remove();}, 4000);
   }
 }
 
-
-function testOnClick(source) {
-  console.log("onClick:", source)
+/*******************************************************************************
+ * Returns the highest mean flux detected in any band.
+ * 
+ * @param {object} data   The data object for a source
+ * @returns               The maximum of the G, BP, and RP-band fluxes.
+ *******************************************************************************/
+function getMaxMeanFlux(data) {
+  return Math.max(
+    data.phot_bp_mean_flux, data.phot_g_mean_flux, data.phot_rp_mean_flux
+  );
 }
 
 // ----------------
@@ -193,6 +218,7 @@ A.init.then(() => {
       target:'gal center', fov: 50, cooFrame: 'galactic',
       showLayersControl: false, showStatusBar: false, showProjectionControl: false,
       showCooLocation: false, showReticle: false, showFrame: false, showCooGrid: false, 
+      showTable: false,
     }
   );
  
@@ -201,66 +227,84 @@ A.init.then(() => {
   // Define custom draw function
   // We can use this to e.g. filter by size relative to FOV
   // ----------------
-  DEGREES_30  = Math.PI * 1 / 6;
-  DEGREES_45  = Math.PI * 1.5 / 6;
-  DEGREES_60  = Math.PI * 2 / 6;
+  const DEGREES_30  = Math.PI * 1.0 / 6;
+  const DEGREES_45  = Math.PI * 1.5 / 6;
+  const DEGREES_60  = Math.PI * 2.0 / 6;
 
-  DEGREES_120 = Math.PI * 4 / 6;
-  DEGREES_135 = Math.PI * 4.5 / 6;
-  DEGREES_150 = Math.PI * 5 / 6;
+  const DEGREES_120 = Math.PI * 4.0 / 6;
+  const DEGREES_135 = Math.PI * 4.5 / 6;
+  const DEGREES_150 = Math.PI * 5.0 / 6;
 
-  DEGREES_210 = Math.PI * 7 / 6;
-  DEGREES_225 = Math.PI * 7.5 / 6;
-  DEGREES_240 = Math.PI * 8 / 6;
+  const DEGREES_210 = Math.PI * 7.0 / 6;
+  const DEGREES_225 = Math.PI * 7.5 / 6;
+  const DEGREES_240 = Math.PI * 8.0 / 6;
 
-  DEGREES_300 = Math.PI * 10 / 6;
-  DEGREES_315 = Math.PI * 10.5 / 6;
-  DEGREES_330 = Math.PI * 11 / 6;
+  const DEGREES_300 = Math.PI * 10.0 / 6;
+  const DEGREES_315 = Math.PI * 10.5 / 6;
+  const DEGREES_330 = Math.PI * 11.0 / 6;
 
-  MARKER_RADIUS = 6;
-  MARKER_INNER = 1;
+  const MARKER_RADIUS = 6;
+  const MARKER_LINE_WIDTH = 2;
+  const MARKER_INNER = 2;
+  const MARKER_ALPHA = 0.75;
 
-  var drawFunction = function(source, canvasCtx, viewParams) {
-    canvasCtx.strokeStyle = 'goldenrod';
-    canvasCtx.lineWidth = 0.5;
-    canvasCtx.globalAlpha = 0.25;
+  /*****************************************************************************
+   * Draws a custom marker
+   * 
+   * @param {Source} source           The source object the marker is for.
+   * @param {*} canvasCtx             The drawing canvas context.
+   * @param {*ViewParams} viewParams  The parameters for the current Aladin view.
+   *****************************************************************************/
+  function drawFunction(source, canvasCtx, viewParams) {
+    // canvasCtx.strokeStyle = 'goldenrod';
+    // canvasCtx.lineWidth = MARKER_LINE_WIDTH;
+    // canvasCtx.globalAlpha = 1.0;
   
-    canvasCtx.beginPath();
-    canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_30,  DEGREES_45);
-    canvasCtx.lineTo(source.x+MARKER_INNER, source.y+MARKER_INNER);
-    canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_45,  DEGREES_60);
-    canvasCtx.closePath();
-    canvasCtx.stroke();
+    // canvasCtx.beginPath();
+    // canvasCtx.arc(source.x, source.y, MARKER_RADIUS, 0, Math.PI * 2);
+    // canvasCtx.closePath();
+    // canvasCtx.stroke();
 
-    canvasCtx.beginPath();
-    canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_120, DEGREES_135);
-    canvasCtx.lineTo(source.x-MARKER_INNER, source.y+MARKER_INNER);
-    canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_135, DEGREES_150);
-    canvasCtx.closePath();
-    canvasCtx.stroke();
+    // =========================================================================
+    // Crosshair Design
+    // =========================================================================
+    // canvasCtx.beginPath();
+    // canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_30,  DEGREES_45);
+    // canvasCtx.lineTo(source.x+MARKER_INNER, source.y+MARKER_INNER);
+    // canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_45,  DEGREES_60);
+    // canvasCtx.closePath();
+    // canvasCtx.stroke();
 
-    canvasCtx.beginPath();
-    canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_210, DEGREES_225);
-    canvasCtx.lineTo(source.x-MARKER_INNER, source.y-MARKER_INNER);
-    canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_225, DEGREES_240);
-    canvasCtx.closePath();
-    canvasCtx.stroke();
+    // canvasCtx.beginPath();
+    // canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_120, DEGREES_135);
+    // canvasCtx.lineTo(source.x-MARKER_INNER, source.y+MARKER_INNER);
+    // canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_135, DEGREES_150);
+    // canvasCtx.closePath();
+    // canvasCtx.stroke();
 
-    canvasCtx.beginPath();
-    canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_300, DEGREES_315);
-    canvasCtx.lineTo(source.x+MARKER_INNER, source.y-MARKER_INNER);
-    canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_315, DEGREES_330);
-    canvasCtx.closePath();
-    canvasCtx.stroke();
+    // canvasCtx.beginPath();
+    // canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_210, DEGREES_225);
+    // canvasCtx.lineTo(source.x-MARKER_INNER, source.y-MARKER_INNER);
+    // canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_225, DEGREES_240);
+    // canvasCtx.closePath();
+    // canvasCtx.stroke();
 
+    // canvasCtx.beginPath();
+    // canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_300, DEGREES_315);
+    // canvasCtx.lineTo(source.x+MARKER_INNER, source.y-MARKER_INNER);
+    // canvasCtx.arc(source.x, source.y, MARKER_RADIUS, DEGREES_315, DEGREES_330);
+    // canvasCtx.closePath();
+    // canvasCtx.stroke();
+    // =========================================================================
   };
 
   var gaiaCatalog = A.catalogHiPS(
     'http://axel.u-strasbg.fr/HiPSCatService/I/345/gaia2', 
-    {
+    options={
       name: 'Gaia',
-      displayLabel: false, 
-      limit: 50,  // Not working?
+      limit: 100,  // Not working?
+      displayLabel: false,
+      onClick: 'showPopup',
       filter: filterGaiaCatalog, 
       shape: drawFunction,
     },
@@ -274,16 +318,22 @@ A.init.then(() => {
 
   aladin.on('objectClicked', function(object) {
     if (object) {
-      console.log("Clicked: "+object.data.phot_g_mean_flux);
       console.log(object);
       sonifySource(object);
 
+      var view = object.catalog.view;
+      view.aladin.popup.setTitle(
+        "ID: "+object.data.source_id
+      );
+      view.aladin.popup.setText(
+        "Luminosity: "+object.data.lum_val
+      );
+      view.aladin.popup.setSource(object);
+      view.aladin.popup.show();
     }
   })
 
   aladin.on('objectHovered', function(object) {
-    var parallax, luminosity, proper_motion;
-
     if (object) {
       sonifySource(object);
     }
