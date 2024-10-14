@@ -34,8 +34,8 @@ document.getElementById("startButton").onclick = function() {
         release: 0.8,
         baseFrequency: 300,
         octaves: 4,
-      },
-    }
+      }
+    },
   ).toDestination();
 
   synth_metal = new Tone.PolySynth(
@@ -47,7 +47,7 @@ document.getElementById("startButton").onclick = function() {
         decay: 0.4,
       },
       volume: -30,
-    }
+    },
   ).toDestination();
 };
 
@@ -76,7 +76,7 @@ const PIANO_MULT_PARALLAX = 1;
  * @returns                   The corresponding audio frequency.
  *******************************************************************************/
 function valueScaleToPianoFreq(value, key_base, key_mult) {
-  let key_number = key_base + key_mult * value;
+  var key_number = key_base + key_mult * value;
   key_number = Math.min(Math.max(key_number, 1), 88);
   return 2**((key_number-49)/12) * 440.0;
 }
@@ -105,7 +105,9 @@ function valueScaleToFreq(value, freq_base, freq_mult) {
  * @returns                   A scaled audio frequency.
  *******************************************************************************/
 function parallaxToFreq(parallax) {
-  return valueScaleToFreq(Math.max(0, parallax), FREQ_BASE_PARALLAX, FREQ_MULT_PARALLAX);
+  return valueScaleToFreq(
+    Math.max(0, parallax), FREQ_BASE_PARALLAX, FREQ_MULT_PARALLAX
+  );
 }
 
 
@@ -119,7 +121,9 @@ function parallaxToFreq(parallax) {
  * @returns                        A scaled audio frequency.
  *******************************************************************************/
 function properMotionToFreq(proper_motion) {
-  return valueScaleToFreq(proper_motion, FREQ_BASE_PROPER_MOTION, FREQ_MULT_PROPER_MOTION);
+  return valueScaleToFreq(
+    proper_motion, FREQ_BASE_PROPER_MOTION, FREQ_MULT_PROPER_MOTION
+  );
 }
 
 
@@ -145,17 +149,17 @@ function filterGaiaCatalog(source) {
 // ----------------
 // Sonify the object
 // ----------------
-TIME_MULT_FLUX = 0.1;
-TIME_BASE_MONO = 0.3;
-TIME_BASE_METAL= 0.1;
+const TIME_MULT_FLUX = 0.1;
+const TIME_BASE_MONO = 0.3;
+const TIME_BASE_METAL= 0.1;
 /*******************************************************************************
  * Sonifies a source.
  * 
- * @param {source}  Aladin.source to be sonified.
+ * @param {Source}  Aladin.source to be sonified.
  *******************************************************************************/
 function sonifySource(source) {
   if (source.data && source.data.parallax) {
-    source_data = source.data;
+    var source_data = source.data;
     var parallax = Number(source.data.parallax);
     // var luminosity = Number(source.data.lum_val);
 
@@ -163,16 +167,16 @@ function sonifySource(source) {
     var maximum_flux = Math.log10(
       Math.max(source_data.phot_g_mean_flux, source_data.phot_bp_mean_flux, source_data.phot_rp_mean_flux)
     );
+    var timeMono = TIME_BASE_MONO + (TIME_MULT_FLUX * maximum_flux);
+    var timeMetal = TIME_BASE_METAL + (TIME_MULT_FLUX * maximum_flux);
 
     synth_mono.triggerAttackRelease(
-      parallaxToFreq(parallax),
-      TIME_BASE_MONO + (TIME_MULT_FLUX * maximum_flux)
+      parallaxToFreq(parallax), timeMono,
     );
     synth_metal.triggerAttackRelease(
-      properMotionToFreq(proper_motion),
-      TIME_BASE_METAL + (TIME_MULT_FLUX * maximum_flux)
+      properMotionToFreq(proper_motion), timeMetal,
     );
-
+   
     // ----------------
     // This block was written for if we wanted to store/generate sounds for each source elsewhere.
     // ----------------
@@ -185,9 +189,9 @@ function sonifySource(source) {
     // }
     // audioElement.play();
 
-    let screenPos = aladin.world2pix(source.ra, source.dec);
-		let pulseDiv = document.createElement("div");
-		pulseDiv.setAttribute('class','pulse'), document.getElementById('aladinLiteDiv').appendChild(pulseDiv), pulseDiv.style.top=screenPos[1]+'px',pulseDiv.style.left=screenPos[0]+'px';
+    var screenPos = aladin.world2pix(source.ra, source.dec);
+    var pulseDiv = document.createElement("div");
+    pulseDiv.setAttribute('class','pulse'), document.getElementById('aladinLiteDiv').appendChild(pulseDiv), pulseDiv.style.top=screenPos[1]+'px',pulseDiv.style.left=screenPos[0]+'px';
     setTimeout(function(){pulseDiv.remove();}, 4000);
   }
 }
@@ -207,8 +211,8 @@ function getMaxMeanFlux(data) {
 // ----------------
 // Initialise Aladin, load and filter Gaia, then set up the mouseover code
 // ----------------
-let aladin;
-let fov_component;
+var aladin;
+var fov_component;
 
 
 A.init.then(() => {
@@ -251,9 +255,9 @@ A.init.then(() => {
   /*****************************************************************************
    * Draws a custom marker
    * 
-   * @param {Source} source           The source object the marker is for.
-   * @param {*} canvasCtx             The drawing canvas context.
-   * @param {*ViewParams} viewParams  The parameters for the current Aladin view.
+   * @param {Source} source          The source object the marker is for.
+   * @param {CanvasRenderingContext2D} canvasCtx  The drawing canvas context.
+   * @param {ViewParams} viewParams  The parameters for the current Aladin view.
    *****************************************************************************/
   function drawFunction(source, canvasCtx, viewParams) {
     // canvasCtx.strokeStyle = 'goldenrod';
