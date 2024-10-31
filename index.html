@@ -54,25 +54,26 @@
 
         animation-name: grow;
         animation-timing-function: ease-out;
-        animation-duration: 3s;
+        animation-duration: 1.5s;
+        /* animation-duration: var(--duration, 1.5s); */
         animation-fill-mode: both;
       }
       @keyframes grow{
         0%{
-          transform: translate(-50%,-50%) scale(1);
-          opacity: 25%;
+          transform: translate(-50%,-50%) scale(0.5);
+          opacity: 0%;
         }
         50%{
-          transform: translate(-50%,-50%) scale(4);
+          transform: translate(-50%,-50%) scale(2.5);
           opacity: 100%;
         }
 
         75%{
-          transform: translate(-50%,-50%) scale(4.5);
+          transform: translate(-50%,-50%) scale(3.5);
           opacity: 50%;
         }
         100%{
-          transform: translate(-50%,-50%) scale(5);
+          transform: translate(-50%,-50%) scale(4.5);
           opacity: 0%;
           display: none;
         }

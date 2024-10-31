@@ -192,7 +192,8 @@ function sonifySource(source) {
     var screenPos = aladin.world2pix(source.ra, source.dec);
     var pulseDiv = document.createElement("div");
     pulseDiv.setAttribute('class','pulse'), document.getElementById('aladinLiteDiv').appendChild(pulseDiv), pulseDiv.style.top=screenPos[1]+'px',pulseDiv.style.left=screenPos[0]+'px';
-    setTimeout(function(){pulseDiv.remove();}, 4000);
+    // pulseDiv.style.setProperty('--duration', "1.5s")
+    setTimeout(function(){pulseDiv.remove();}, 2000);
   }
 }
 
