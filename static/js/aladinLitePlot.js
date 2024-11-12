@@ -1,5 +1,18 @@
 let synth_mono, synth_metal;
 
+
+/*******************************************************************************
+ * Select which type of data should be sonified on mouseover. 
+ *  
+ * @param {object} input  The selection of data to sonify.
+ *******************************************************************************/
+function sonifyVarChanged(input) {
+  sonify_var = input.dataset.sonify
+}
+/** The variable to sonify */
+let sonify_var = "parallax";
+
+
 // ----------------
 // Need a user action to initiate the audio, you can't do it automatically
 // ----------------
@@ -111,7 +124,6 @@ function parallaxToFreq(parallax) {
 }
 
 
-
 /*******************************************************************************
  * Scales an input proper motion into a sound frequency.
  * 
@@ -160,23 +172,28 @@ const TIME_BASE_METAL= 0.1;
 function sonifySource(source) {
   if (source.data && source.data.parallax) {
     var source_data = source.data;
-    var parallax = Number(source.data.parallax);
-    // var luminosity = Number(source.data.lum_val);
-
-    var proper_motion = Math.sqrt(Number(source_data.pmra)**2 + Number(source_data.pmdec)**2);
     var maximum_flux = Math.log10(
       Math.max(source_data.phot_g_mean_flux, source_data.phot_bp_mean_flux, source_data.phot_rp_mean_flux)
     );
-    var timeMono = TIME_BASE_MONO + (TIME_MULT_FLUX * maximum_flux);
-    var timeMetal = TIME_BASE_METAL + (TIME_MULT_FLUX * maximum_flux);
+    
+    switch(sonify_var) {
+      case "parallax":
+        synth_mono.triggerAttackRelease(
+          parallaxToFreq(Number(source_data.parallax)), 
+          TIME_BASE_MONO + (TIME_MULT_FLUX * maximum_flux),
+        );
+        break;
 
-    synth_mono.triggerAttackRelease(
-      parallaxToFreq(parallax), timeMono,
-    );
-    synth_metal.triggerAttackRelease(
-      properMotionToFreq(proper_motion), timeMetal,
-    );
-   
+      case "pm":
+        synth_metal.triggerAttackRelease(
+          properMotionToFreq(
+            Math.sqrt(Number(source_data.pmra)**2 + Number(source_data.pmdec)**2)
+          ), 
+          TIME_BASE_METAL + (TIME_MULT_FLUX * maximum_flux),
+        );
+        break;
+    }
+    
     // ----------------
     // This block was written for if we wanted to store/generate sounds for each source elsewhere.
     // ----------------

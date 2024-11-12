@@ -40,7 +40,7 @@
         }
       }    
     </style>
-    <link href="static/css/cover.css" rel="stylesheet">  
+    <link href="static/css/sonification-custom.css" rel="stylesheet">  
     <link href="static/css/aladin.scss" rel="stylesheet">  
     <style type="text/css">
       .pulse{
@@ -111,10 +111,18 @@
  
         <!-- The hidden div that holds the Aladin Lite display -->
         <div id="aladinDiv" class="collapse">
-          <p class="lead text-outline">
-            Synth noises are <strong>parallax</strong>, and chimes are <strong>proper motion</strong><br/>
-            Higher pitches represent larger values, meaning the star is closer<br/>
-            Longer sounds represent more <strong>photons detected</strong>, meaning the star is brighter
+          <span class="lead text-outline">
+            Higher pitches represent greater &nbsp;
+            <span class="lead btn-group" role="group" aria-label="Choice of data to sonify">
+              <input type="radio" class="btn-check" name="options-sonify" id="options-sonify1" autocomplete="off" data-sonify="parallax" onchange="sonifyVarChanged(this)" checked>
+              <label class="btn btn-outline-light" id="options-sonify1-label" for="options-sonify1">Parallax</label>
+  
+              <input type="radio" class="btn-check" name="options-sonify" id="options-sonify2" autocomplete="off" data-sonify="pm" onchange="sonifyVarChanged(this)">
+              <label class="btn btn-outline-light" id="options-sonify2-label" for="options-sonify2">Proper Motion</label>
+            </span>
+            <br/>
+
+            Longer sounds represent more <strong>light detected</strong>
           </p>
           <div id="aladinLiteDiv" style="width: 100%; height: 430px;" class="aladinClass"></div>
           <p class="lead text-outline">
