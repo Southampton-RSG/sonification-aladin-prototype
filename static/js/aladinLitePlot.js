@@ -1783,21 +1783,11 @@ A.init.then(() => {
           var star_name;
           var star_type;
 
-          // First... SIMBAD returns name as e.g. 'bet' not β or `\U+03B2`
-          // The IAU e.t.c. standards use unicode, so we swap them out
-          for (const [letter_name, unicode] of Object.entries(greek_name_to_unicode)) {
-            star_id = star_id.replace(letter_name, unicode);
-          }
-
-          if (id_to_name[star_id]) {
-            star_name = id_to_name[star_id];
-          }
-
           // Now we try getting the type from the otype, which may be blank
           if (otype_to_type[star_otype]) {
             star_type = otype_to_type[star_otype];
           } else {
-            // The otype *may* be in the first block of the ID (e.g. "*V \U+03B2 Cyg")
+            // The otype *may* be in the first block of the ID (e.g. "*V  bet Cyg")
             var test_otype = star_id.split(" ", 1)[0];
             if (otype_to_type[test_otype]) {
               star_type = otype_to_type[test_otype];
@@ -1805,22 +1795,36 @@ A.init.then(() => {
             }
           }
 
-          // If no 'fixed' name, we use the ID
-          if (!star_name) {
+          // Try comparing to the IAU star names list
+          if (id_to_name[star_id]) {
+            star_name = id_to_name[star_id];
+
+          } else {
+            // If it doesn't have a 'fixed' name, use the ID but it may be abbreviated (e.g. "*V bet Cyg")
             // First, we split it into bits
             var star_id_parts = star_id.split(' ');
             // Create a copy, to update - otherwise removing bits gets messy
             var star_name_parts = star_id_parts.slice();
 
-            // Does the last bit contain a constellation?
-            for (const [abbreviation, full] of Object.entries(constellation_abbreviations)) {
-              const abbreviation_index = star_id_parts.indexOf(abbreviation)
-              if (abbreviation_index > -1) {
-                star_name_parts.splice(abbreviation_index, 1, full);
+            // Are any of the bits a constellation abbreviation (e.g. "cyg")? If so, expand them
+            for (var idx=0; idx < star_id_parts.length; idx++) {
+              for (const [abbreviation, full] of Object.entries(constellation_abbreviations)) {
+                if (star_id_parts.at(idx) == abbreviation) {
+                  star_name_parts.splice(idx, 1, full);
+                }
               }
             }
 
-            // If this is "*V beta Cyg", throw away the first bit
+            // Are any of the bits a SIMBAD-style greek letter (e.g. "bet")? If so, correct them
+            for (var idx=0; idx < star_id_parts.length; idx++) {
+              for (const [letter_name, unicode] of Object.entries(greek_name_to_unicode)) {
+                if(star_id_parts[idx] == letter_name) {
+                  star_name_parts.splice(idx, 1, unicode);
+                }
+              }  
+            }
+
+            // Is it prepended by an object type (e.g. "*V")? If so, drop it
             // This may have been done earlier if there wasn't an otype in the catalogue entry
             for (const otype of Object.keys(otype_to_type)) {
               if (star_id_parts.at(0) == otype) {

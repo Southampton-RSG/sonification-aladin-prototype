@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Gaia Sonification</title>
+    <title>Gaia Soundscapes</title>
 
     <!-- https://getbootstrap.com -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -116,10 +116,20 @@
               Higher pitches represent greater &nbsp;
               <span class="lead btn-group" role="group" aria-label="Choice of data to sonify">
                 <input type="radio" class="btn-check" name="options-sonify" id="options-sonify1" autocomplete="off" data-sonify="parallax" onchange="sonifyVarChanged(this)" checked>
-                <label class="btn btn-outline-light" id="options-sonify1-label" for="options-sonify1">Parallax</label>
+                <label class="btn btn-outline-light" id="options-sonify1-label" for="options-sonify1">
+                  Parallax
+                  <a target="_blank" href="about.html#info-parallax" class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-light">
+                    <span class="visually-hidden">What is Parallax</span>?
+                  </a>
+                </label>
     
                 <input type="radio" class="btn-check" name="options-sonify" id="options-sonify2" autocomplete="off" data-sonify="pm" onchange="sonifyVarChanged(this)">
-                <label class="btn btn-outline-light" id="options-sonify2-label" for="options-sonify2">Proper Motion</label>
+                <label class="btn btn-outline-light" id="options-sonify2-label" for="options-sonify2">
+                  Proper Motion
+                  <a target="_blank" href="about.html#info-proper-motion"  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light">
+                    <span class="visually-hidden">What is Proper Motion</span>?
+                  </a>
+                </label>
               </span>
               <br/>
             </p>

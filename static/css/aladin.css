@@ -25,3 +25,10 @@
   paint-order: stroke;
   text-shadow: 0 0 0.5rem rgba(51, 51, 51, 1);
 }
+
+.aladin-btn {
+  /* background-color: #1b1b1b; */
+  box-shadow: 0 0 0.1rem 0.2rem rgba(51, 51, 51, 0.75);
+  border-color: white;
+  border-width: 2px;
+}
