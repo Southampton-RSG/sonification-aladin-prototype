@@ -82,91 +82,96 @@
 
   </head>
 
-  <body class="d-flex h-100 text-center text-white bd-placeholder-img">   
-    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-      <!-- Header with links to About page e.t.c. -->
-      <header class="mb-auto text-outline">
-        <div>
-          <h3 class="float-md-start mb-0">Gaia Soundscapes</h3>
-          <nav class="nav nav-masthead justify-content-center float-md-end">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-            <a class="nav-link" href="about.html">About</a>
-          </nav>
-        </div>
-      </header>
+  <body class="d-flex h-100 text-center text-white body-shadow bd-placeholder-img">  
+    
+      <div class="cover-container d-flex flex-column w-100 h-100 p-3 mx-auto">
+        <!-- Header with links to About page e.t.c. -->
+        <header class="mb-auto text-outline">
+          <div>
+            <h3 class="float-md-start mb-0">Gaia Soundscapes</h3>
+            <nav class="nav nav-masthead justify-content-center float-md-end">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link" href="about.html">About</a>
+            </nav>
+          </div>
+        </header>
 
-      <!-- Button to toggle the Aladin div on -->
-      <main class="p-3">
-        <div class="collapse show" id="leadDiv">
-          <h1 class="text-outline">
-            Hear the Skies
-          </h1>
-          <p class="lead text-outline">
-            Listen to the data from the European Space Agency's Gaia survey
-          </p>
-          <button id="startButton" class="btn btn-lg btn-light fw-bold lead-shadow collapse show" data-bs-toggle="collapse" data-bs-target="#leadDiv">
-            Explore <i class="fa fa-solid fa-satellite-dish"></i>
-          </button>
-        </div>
- 
-        <!-- The hidden div that holds the Aladin Lite display -->
-        <div id="aladinDiv" class="collapse">
-          <span class="lead text-outline">
-            Higher pitches represent greater &nbsp;
-            <span class="lead btn-group" role="group" aria-label="Choice of data to sonify">
-              <input type="radio" class="btn-check" name="options-sonify" id="options-sonify1" autocomplete="off" data-sonify="parallax" onchange="sonifyVarChanged(this)" checked>
-              <label class="btn btn-outline-light" id="options-sonify1-label" for="options-sonify1">Parallax</label>
+        <!-- Button to toggle the Aladin div on -->
+        <main class="p-3">
+          <div class="collapse show" id="leadDiv">
+            <h1 class="text-outline">
+              Hear the Skies
+            </h1>
+            <p class="lead text-outline">
+              Listen to the data from the European Space Agency's Gaia survey
+            </p>
+            <button id="startButton" class="btn btn-lg btn-light fw-bold lead-shadow collapse show" data-bs-toggle="collapse" data-bs-target="#leadDiv">
+              Explore <i class="fa fa-solid fa-satellite-dish"></i>
+            </button>
+          </div>
   
-              <input type="radio" class="btn-check" name="options-sonify" id="options-sonify2" autocomplete="off" data-sonify="pm" onchange="sonifyVarChanged(this)">
-              <label class="btn btn-outline-light" id="options-sonify2-label" for="options-sonify2">Proper Motion</label>
-            </span>
-            <br/>
+          <!-- The hidden div that holds the Aladin Lite display -->
+          <div id="aladinDiv" class="collapse">
+            <span class="lead text-outline">
+              Higher pitches represent greater &nbsp;
+              <span class="lead btn-group" role="group" aria-label="Choice of data to sonify">
+                <input type="radio" class="btn-check" name="options-sonify" id="options-sonify1" autocomplete="off" data-sonify="parallax" onchange="sonifyVarChanged(this)" checked>
+                <label class="btn btn-outline-light" id="options-sonify1-label" for="options-sonify1">Parallax</label>
+    
+                <input type="radio" class="btn-check" name="options-sonify" id="options-sonify2" autocomplete="off" data-sonify="pm" onchange="sonifyVarChanged(this)">
+                <label class="btn btn-outline-light" id="options-sonify2-label" for="options-sonify2">Proper Motion</label>
+              </span>
+              <br/>
+            </p>
+            <div id="aladinLiteDiv" style="width: 100%; height: 430px;" class="aladinClass"></div>
+            <span class="lead text-outline">
+              Longer sounds represent more <strong>light detected</strong><br>
+              <strong>Click</strong> on a sonified source for more information
+            </p>
+          </div>
+        </main>    
+        
+        <!-- Footer with links & attribution -->
+        <footer class="mt-auto text-white-50 text-outliner">
+          <div class="row">        
+            <!-- Navbar of resource links -->
+            <ul class="nav justify-content-center">
+              <li class="nav-item">
+                <a class="nav-link px-2" href="https://aladin.cds.unistra.fr/AladinLite/">
+                  <img src="static/img/aladin_logo.png" alt="Aladin Lite">
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link px-2" href="https://aladin.cds.unistra.fr/simbad/">
+                  <img src="static/img/simbad_logo.png" alt="Simbad Astronomical Database">
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link px-2" href="https://www.esa.int/Science_Exploration/Space_Science/Gaia_overview">
+                  <img src="static/img/gaia_logo.png" alt="Gaia Mission">
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link px-2" href="https://www.southampton.ac.uk/">
+                  <img src="static/img/UOS_logo_white.png" alt="University of Southampton">
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white px-2" href="https://www.astro.soton.ac.uk/">
+                  Astronomy & Astrophysics
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link px-2" href="https://www.southampton.ac.uk/">
+                  <img src="static/img/RSG_logo_orange.png" alt="Research Software Group">
+                </a>
+              </li>
+            </ul>
+          </div>
+        </footer>
 
-            Longer sounds represent more <strong>light detected</strong>
-          </p>
-          <div id="aladinLiteDiv" style="width: 100%; height: 430px;" class="aladinClass"></div>
-          <p class="lead text-outline">
-          </p>
-        </div>
-      </main>    
-
-      <!-- Footer with links & attribution -->
-      <footer class="mt-auto text-white-50 text-outline"></footer>
-        <!-- Navbar of resource links -->
-        <ul class="nav justify-content-center">
-          <li class="nav-item">
-            <a class="nav-link px-2" href="https://aladin.cds.unistra.fr/AladinLite/">
-              <img src="static/img/aladin_logo.png" alt="Aladin Lite">
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link px-2" href="https://www.esa.int/Science_Exploration/Space_Science/Gaia_overview">
-              <img src="static/img/gaia_logo.png" alt="Gaia Mission">
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link px-2" href="https://www.southampton.ac.uk/">
-              <img src="static/img/UOS_logo_white.png" alt="University of Southampton">
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white px-2" href="https://www.astro.soton.ac.uk/">
-              Astronomy & Astrophysics
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link px-2" href="https://www.southampton.ac.uk/">
-              <img src="static/img/RSG_logo_orange.png" alt="Research Software Group">
-            </a>
-          </li>
-        </ul>
-        <p class="text-center">
-          <a class="text-muted" href="https://www.esa.int/ESA_Multimedia/Images/2020/12/The_colour_of_the_sky_from_Gaia_s_Early_Data_Release_3">
-            ESA/Gaia/DPAC; CC BY-SA 3.0 IGO. Acknowledgement: A. Moitinho
-          </a>
-        </p>
-      </footer>
-
+      
+      <!-- <script type="module" src="static/js/aladinLitePlot.js"></script> -->
       <script type="text/javascript" src="static/js/aladinLitePlot.js"></script>
     </div>
 

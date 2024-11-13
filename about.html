@@ -13,91 +13,155 @@
     <!-- FontAwesome icons -->
     <script src="https://kit.fontawesome.com/92fa7349d3.js" crossorigin="anonymous"></script>
 
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-        background-color: #1b1b1b;
-        background-image: url("static/img/eso1908e.png");
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-position: center; 
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }    
-    </style>
     <link href="static/css/sonification-custom.css" rel="stylesheet">  
   </head>
 
-  <body class="d-flex h-100 text-center text-white bd-placeholder-img">   
-    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-      <!-- Header with links to About page e.t.c. -->
-      <header class="mb-auto text-outline">
-        <div>
-          <h3 class="float-md-start mb-0">Gaia Soundscapes</h3>
-          <nav class="nav nav-masthead justify-content-center float-md-end">
-            <a class="nav-link" href="index.html">Home</a>
-            <a class="nav-link active" aria-current="page" href="#">About</a>
-          </nav>
+  <body class="d-flex flex-column h-100 text-white background-charcoal">
+    <header class="text-outline">
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-md">
+        <div class="container">
+          <h3 class="float-md-start">Gaia Soundscapes</h3>
+          <!-- <a class="navbar-brand" href="#">Gaia Soundscapes</a> -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse " id="navbarCollapse">
+            <ul class="navbar-nav nav-masthead ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="#" aria-current="page">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#">About</a>
+              </li>
+            </ul>
+          </div>
         </div>
-      </header>
+      </nav>
+    </header>
 
-      <main class="p-3">
-        <div class="container text-start">
-          <div class="row background-about my-3">
-            <div class="col-8 border-end">
-              <h2>Gaia</h2>
-              <p>Some text</p>
-            </div>
-            <div class="col-4">
-              <img src="static/img/about/gaia.jpg" class="w-100" alt="Cylindrical Gaia satellite under preparation by clean-suited scientists">
-            </div>
-          </div>
-          <div class="row  background-about my-2">
-            <div class="col-4 border-end">
-              A PICTURE
-            </div>
-            <div class="col-8">
-              <h2>Proper Motion</h2>
-              <p>Some text</p>
-            </div>
-          </div>
-          <div class="row  background-about my-2">
-            <div class="col-8 border-end">
-              <h2>Parallax</h2>
-              <p>Some text</p>
-            </div>
-            <div class="col-4">
-              A PICTURE
-            </div>
-          </div>
-          <div class="row  background-about my-2">
-            <div class="col-4 border-end">
-              A PICTURE
-            </div>
-            <div class="col-8">
-              <h2>Flux</h2>
-              <p>Some text</p>
-            </div>
+    <!-- Begin page content -->
+    <main class="flex-shrink-0 background-charcoal">
+      <div class="container">
+        <div class="row my-3">
+          <h1 class="mt-3 text-outline text-center">About the Soundscape</h1>
+        </div>
+        
+        <div class="row my-3 p-2 background-about">
+          <div class="clearfix">
+            <img src="static/img/about/gaia.jpg" class="col-md-3 float-md-end m-3 float-border" alt="Cylindrical Gaia satellite under preparation by clean-suited scientists">
+            <h2 class="text-outline">Gaia</h2>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vitae luctus nisi, a gravida turpis. Cras sed lorem fringilla, gravida dui nec, posuere dolor. Donec malesuada sit amet turpis ut tincidunt. Duis molestie urna non purus finibus interdum. Vivamus nulla mi, posuere in dignissim quis, auctor eu nisi. Morbi sit amet semper libero. Vestibulum ultricies mauris sed porta dictum. Aliquam erat volutpat. Fusce in maximus neque. Fusce maximus elementum elit, non rhoncus erat tincidunt ac. Proin mattis molestie ex. Ut justo ipsum, aliquam id sodales et, sodales in ex. Praesent et pellentesque nunc. Nullam vitae ante id urna blandit ultricies nec eu dui. Nullam interdum sollicitudin mi. Sed at cursus magna.
+            </p>
+            <p>
+              Quisque arcu urna, maximus et vestibulum ut, laoreet sed nibh. Sed interdum interdum massa id rutrum. Donec vel sapien id ex elementum cursus tempus nec est. Nullam id diam tincidunt, laoreet nulla in, aliquet diam. Morbi in dignissim sem. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec imperdiet id tortor nec congue. Nam quis egestas libero, eget porta erat.
+            </p>
+            <p>
+              Nulla rhoncus efficitur mauris in porta. Ut id condimentum ipsum, sed egestas nibh. Cras ut finibus ex. In quis dolor quam. Fusce in ullamcorper arcu. Aliquam at orci turpis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ultrices turpis diam, vitae aliquam dui auctor in. Nam facilisis orci nec lorem imperdiet ornare. 
+            </p>
           </div>
         </div>
 
-      </main>    
+        <div class="row my-3 p-2 background-about">
+          <div class="clearfix">
+            <img src="static/img/about/gaia.jpg" class="col-md-3 float-md-start m-3 float-border" alt="Cylindrical Gaia satellite under preparation by clean-suited scientists">
+            <h2 class="text-outline">Proper Motion</h2>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vitae luctus nisi, a gravida turpis. Cras sed lorem fringilla, gravida dui nec, posuere dolor. Donec malesuada sit amet turpis ut tincidunt. Duis molestie urna non purus finibus interdum. Vivamus nulla mi, posuere in dignissim quis, auctor eu nisi. Morbi sit amet semper libero. Vestibulum ultricies mauris sed porta dictum. Aliquam erat volutpat. Fusce in maximus neque. Fusce maximus elementum elit, non rhoncus erat tincidunt ac. Proin mattis molestie ex. Ut justo ipsum, aliquam id sodales et, sodales in ex. Praesent et pellentesque nunc. Nullam vitae ante id urna blandit ultricies nec eu dui. Nullam interdum sollicitudin mi. Sed at cursus magna.
+            </p>
+            <p>
+              Quisque arcu urna, maximus et vestibulum ut, laoreet sed nibh. Sed interdum interdum massa id rutrum. Donec vel sapien id ex elementum cursus tempus nec est. Nullam id diam tincidunt, laoreet nulla in, aliquet diam. Morbi in dignissim sem. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec imperdiet id tortor nec congue. Nam quis egestas libero, eget porta erat.
+            </p>
+            <p>
+              Nulla rhoncus efficitur mauris in porta. Ut id condimentum ipsum, sed egestas nibh. Cras ut finibus ex. In quis dolor quam. Fusce in ullamcorper arcu. Aliquam at orci turpis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ultrices turpis diam, vitae aliquam dui auctor in. Nam facilisis orci nec lorem imperdiet ornare. 
+            </p>
+          </div>
+        </div>
+        
+        <div class="row my-3 p-2 background-about">
+          <div class="clearfix">
+            <img src="static/img/about/gaia.jpg" class="col-md-3 float-md-end m-3 float-border" alt="Cylindrical Gaia satellite under preparation by clean-suited scientists">
+            <h2 class="text-outline">Parallax</h2>            
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vitae luctus nisi, a gravida turpis. Cras sed lorem fringilla, gravida dui nec, posuere dolor. Donec malesuada sit amet turpis ut tincidunt. Duis molestie urna non purus finibus interdum. Vivamus nulla mi, posuere in dignissim quis, auctor eu nisi. Morbi sit amet semper libero. Vestibulum ultricies mauris sed porta dictum. Aliquam erat volutpat. Fusce in maximus neque. Fusce maximus elementum elit, non rhoncus erat tincidunt ac. Proin mattis molestie ex. Ut justo ipsum, aliquam id sodales et, sodales in ex. Praesent et pellentesque nunc. Nullam vitae ante id urna blandit ultricies nec eu dui. Nullam interdum sollicitudin mi. Sed at cursus magna.
+            </p>
+            <p>
+              Quisque arcu urna, maximus et vestibulum ut, laoreet sed nibh. Sed interdum interdum massa id rutrum. Donec vel sapien id ex elementum cursus tempus nec est. Nullam id diam tincidunt, laoreet nulla in, aliquet diam. Morbi in dignissim sem. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec imperdiet id tortor nec congue. Nam quis egestas libero, eget porta erat.
+            </p>
+            <p>
+              Nulla rhoncus efficitur mauris in porta. Ut id condimentum ipsum, sed egestas nibh. Cras ut finibus ex. In quis dolor quam. Fusce in ullamcorper arcu. Aliquam at orci turpis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ultrices turpis diam, vitae aliquam dui auctor in. Nam facilisis orci nec lorem imperdiet ornare. 
+            </p>
+          </div>
+        </div>
 
-      <!-- Footer with links & attribution -->
-      <footer class="mt-auto text-white-50 text-outline"></footer>
-        <!-- Navbar of resource links -->
+        <div class="row my-3">
+          <div class="row my-2">
+            <h2 class="text-outline text-center">Acknowledgements</h2>
+          </div>
+
+          <div class="row justify-content-around">
+            <div class="card background-about col-3">
+              <img src="static/img/aladin_logo.png" class="card-img-top p-2" alt="A capitalised angular word Aladin over a swirling red and purple galaxy.">
+              <div class="card-body">
+                <p class="card-text">
+                  This work has made use of "Aladin sky atlas" developed at CDS, Strasbourg Observatory, France.
+                </p>
+              </div>
+              <a href="https://ui.adsabs.harvard.edu/abs/2022ASPC..532....7B/abstract" class="card-link p-2">2022ASPC..532....7B; Aladin Lite v3</a>
+            </div>
+
+            <div class="card background-about col-3">
+              <img src="static/img/simbad_logo.png" class="card-img-top p-2" alt="A capitalised angular word Simbad over a swirl of blue and green gas.">
+              <div class="card-body">
+                <p class="card-text">
+                  This work has made use of the SIMBAD database, operated at CDS, Strasbourg, France. 
+                </p>
+              </div>
+              <a href="https://ui.adsabs.harvard.edu/abs/2000A%26AS..143....9W" class="card-link p-2">2000,A&AS,143,9;"The SIMBAD astronomical database", Wenger et al.</a> 
+            </div>
+
+            <div class="card background-about col-3">
+              <img src="static/img/gaia_logo.png" class="card-img-top p-2" alt="A capitalised angular word Simbad over a swirl of blue and green gas.">
+              <div class="card-body">
+                <p class="card-text">
+                  This work has made use of data from the European Space Agency (ESA) mission Gaia (<a href="https://www.cosmos.esa.int/gaia">link</a>), 
+            processed by the Gaia Data Processing and Analysis Consortium (DPAC, <a href="https://www.cosmos.esa.int/web/gaia/dpac/consortium">link</a>). 
+            Funding for the DPAC has been provided by national institutions, in particular the institutions participating in the Gaia Multilateral Agreement.
+                </p>
+              </div>
+            </div>
+
+            <div class="card background-about col-3">
+              <img src="static/img/gaia_sky_map.png" class="card-img-top p-2" alt="An oval view of the full night sky from earth, with a bright central strip of the milky way and dark webs of gas cloud across it.">
+              <div class="card-body">
+                <p class="card-text">
+                  Background image based on "The colour of the sky from Gaia’s Early Data Release 3".
+                </p>
+              </div>
+              <a class="card-link p-2" href="https://www.esa.int/ESA_Multimedia/Images/2020/12/The_colour_of_the_sky_from_Gaia_s_Early_Data_Release_3">
+                ESA/Gaia/DPAC; CC BY-SA 3.0 IGO. Acknowledgement: A. Moitinho  
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+
+
+
+    <footer class="footer py-3 mt-5">
+      <div class="container text-white-50 text-outline">
         <ul class="nav justify-content-center">
           <li class="nav-item">
             <a class="nav-link px-2" href="https://aladin.cds.unistra.fr/AladinLite/">
               <img src="static/img/aladin_logo.png" alt="Aladin Lite">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-2" href="https://aladin.cds.unistra.fr/simbad/">
+              <img src="static/img/simbad_logo.png" alt="Simbad Astronomical Database">
             </a>
           </li>
           <li class="nav-item">
@@ -126,8 +190,9 @@
             ESA/Gaia/DPAC; CC BY-SA 3.0 IGO. Acknowledgement: A. Moitinho
           </a>
         </p>
-      </footer>
-    </div>
-
-  </body>  
+      </div>
+      </div>
+    </footer>
+      
+  </body>
 </html>

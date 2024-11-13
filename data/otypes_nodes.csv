@@ -1,0 +1,186 @@
+Id,Label,Candidate,Description
+?,Unknown,,Object of Unknown Nature
+..1,,,{pr*} Pre-Main Sequence Star 
+..10,,,Barium Star
+..11,,,Dwarf Carbon Star
+..12,,,Carbon-Enhanced Metal Poor Star
+..13,,,{Al*} Eclipsing Binary of Algol type
+..14,,,{bL*}Eclipsing Binary of beta Lyr type
+..15,,,{WU*} Eclipsing Binary of W UMa type
+..16,,,{NL*} Nova-like Binary
+..17,,,{DN*} Dwarf Nova
+..18,,,{DQ*} CV of DQ Her type  Intermediate polar.
+..19,,,{AM*} CV of AM CVn type
+..2,,,LBV=Luminous Blue Variable
+..20,,,Irregular Variable with rapid variations
+..21,,,{Fl*} Flare Star
+..22,,,Star showing Eclipses by its Planet
+..23,,,{*iC} Star towards a Cluster
+..24,,,{*iA} Star towards an Association
+..25,,,{*iN} Star towards a Nebula
+..26,,,{*i*} Star in double system
+..27,,,{BNe} Bright Nebula
+..28,,,{HzG} Galaxy with high redshift
+..29,,,"{ERO} ERO/VRO, Extremely/Very Red Object"
+..3,,,{FU*} FU Ori Variable
+..30,,,"ULIRG, Ultra Luminous Infrared Galaxy"
+..31,,,"{LyA, DLA, mAL, LLS, BAL} Absorption Line System"
+..32,,,{red} Very Red Source
+..4,,,Red Clump Star
+..5,,,{sr*} Semi-Regular Variable
+..6,,,O-rich AGB Star
+..7,,,{ZZ*} Pulsating White Dwarf
+..8,,,ELMWD=Extremely Low Mass White Dwarf
+..9,,,CH Star
+*,Star,,Star
+**,**,**?,Double or Multiple Star
+a2*,alf2CVnV*,a2?,alpha2 CVn Variable
+AB*,AGB*,AB?,Asymptotic Giant Branch Star
+Ae*,Ae*,Ae?,Herbig Ae/Be Star
+AGN,AGN,AG?,Active Galaxy Nucleus
+As*,Association,As?,Association of Stars
+bC*,bCepV*,bC?,beta Cep Variable
+bCG,BlueCompactG,,Blue Compact Galaxy
+BD*,BrownD*,BD?,Brown Dwarf
+Be*,Be*,Be?,Be Star
+BH,BlackHole,BH?,Black Hole
+BiC,BrightestCG,,Brightest Galaxy in a Cluster (BCG)
+Bla,Blazar,Bz?,Blazar
+BLL,BLLac,BL?,BL Lac
+blu,blue,,Blue Object
+BS*,BlueStraggler,BS?,Blue Straggler
+bub,Bubble,,Bubble
+BY*,BYDraV*,BY?,BY Dra Variable
+C*,C*,C*?,Carbon Star
+cC*,ClassicalCep,,Classical Cepheid Variable
+Ce*,Cepheid,Ce?,Cepheid Variable
+CGb,ComGlob,,Cometary Globule / Pillar
+CGG,Compact_Gr_G,,Compact Group of Galaxies
+Cl*,Cluster*,Cl?,Cluster of Stars
+Cld,Cloud,,Cloud
+ClG,ClG,C?G,Cluster of Galaxies
+cm,cmRad,,Centimetric Radio Source
+cor,denseCore,,Dense Core
+CV*,CataclyV*,CV?,Cataclysmic Binary
+DNe,DarkNeb,,Dark Cloud (nebula)
+dS*,delSctV*,,delta Sct Variable
+EB*,EclBin,EB?,Eclipsing Binary
+El*,EllipVar,El?,Ellipsoidal Variable
+Em*,EmLine*,,Emission-line Star
+EmG,EmissionG,,Emission-line galaxy
+EmO,EmObj,,Emission Object
+Er*,Eruptive*,Er?,Eruptive Variable
+err,Inexistent,,"Not an Object (Error, Artefact, ...)"
+ev,Transient,,Transient Event
+Ev*,Evolved*,Ev?,Evolved Star
+FIR,FarIR,,Far-IR source (λ >= 30 µm)
+flt,Filament,,Interstellar Filament
+G,Galaxy,G?,Galaxy
+gam,gamma,,Gamma-ray Source
+gB,gammaBurst,,Gamma-ray Burst
+gD*,gammaDorV*,,gamma Dor Variable
+GiC,GtowardsCl,,Galaxy towards a Cluster of Galaxies
+GiG,GtowardsGroup,,Galaxy towards a Group of Galaxies
+GiP,GinPair,,Galaxy in Pair of Galaxies
+glb,Globule,,Globule (low-mass dark cloud)
+GlC,GlobCluster,Gl?,Globular Cluster
+gLe,GravLens,Le?,Gravitational Lens
+gLS,GravLensSystem,LS?,Gravitational Lens System (lens+images)
+GNe,GalNeb,,Nebula
+GrG,GroupG,Gr?,Group of Galaxies
+grv,Gravitation,,Gravitational Source
+GWE,GravWaveEvent,,Gravitational Wave Event
+H2G,HIIG,,HII Galaxy
+HB*,HorBranch*,HB?,Horizontal Branch Star
+HH,HerbigHaroObj,,Herbig-Haro Object
+HI,HI,,HI (21cm) Source
+HII,HIIReg,,HII Region
+HS*,HotSubdwarf,HS?,Hot Subdwarf
+HV*,HighVel*,,High Velocity Star
+HVC,HVCld,,High-velocity Cloud
+HXB,HighMassXBin,HX?,High Mass X-ray Binary
+IG,InteractingG,,Interacting Galaxies
+IR,Infrared,,Infra-Red Source
+Ir*,IrregularV*,,Irregular Variable
+ISM,ISM,,Interstellar Medium Object
+LeG,LensedG,,Gravitationally Lensed Image of a Galaxy
+LeI,LensedImage,LI?,Gravitationally Lensed Image
+LeQ,LensedQ,,Gravitationally Lensed Image of a Quasar
+Lev,LensingEv,,(Micro)Lensing Event
+LIN,LINER,,LINER-type Active Galaxy Nucleus
+LM*,Low-Mass*,LM?,Low-mass Star
+LP*,LongPeriodV*,LP?,Long-Period Variable
+LSB,LowSurfBrghtG,,Low Surface Brightness Galaxy
+LXB,LowMassXBin,LX?,Low Mass X-ray Binary
+Ma*,Massiv*,Ma?,Massive Star
+Mas,Maser,,Maser
+MGr,MouvGroup,,Moving Group
+Mi*,Mira,Mi?,Mira Variable
+MIR,MidIR,,Mid-IR Source (3 to 30 µm)
+mm,mmRad,,Millimetric Radio Source
+MoC,MolCld,,Molecular Cloud
+mR,metricRad,,Metric Radio Source
+MS*,MainSequence*,MS?,Main Sequence Star
+mul,Blend,,"Composite Object, Blend"
+N*,Neutron*,N*?,Neutron Star
+NIR,NearIR,,Near-IR Source (λ < 3 µm)
+No*,Nova,No?,Classical Nova
+OH*,OH/IR*,OH?,OH/IR Star
+OpC,OpenCluster,,Open Cluster
+Opt,Optical,,Optical Source
+Or*,OrionV*,,Orion Variable
+out,Outflow,of?,Outflow
+pA*,post-AGB*,pA?,Post-AGB Star
+PaG,PairG,,Pair of Galaxies
+PCG,protoClG,PCG?,Proto Cluster of Galaxies
+Pe*,ChemPec*,Pe?,Chemically Peculiar Star
+Pl,Planet,Pl?,Extra-solar Planet
+PM*,HighPM*,,High Proper Motion Star
+PN,PlanetaryNeb,PN?,Planetary Nebula
+PoC,PartofCloud,,Part of Cloud
+PoG,PartofG,,Part of a Galaxy
+Psr,Pulsar,,Pulsar
+Pu*,PulsV*,Pu?,Pulsating Variable
+QSO,QSO,Q?,Quasar
+Rad,Radio,,Radio Source
+rB,radioBurst,,Radio Burst
+RC*,RCrBV*,RC?,R CrB Variable
+reg,Region,,Region defined in the Sky
+rG,RadioG,,Radio Galaxy
+RG*,RGB*,RB?,Red Giant Branch star
+RNe,RefNeb,,Reflection Nebula
+Ro*,RotV*,Ro?,Rotating Variable
+RR*,RRLyrae,RR?,RR Lyrae Variable
+RS*,RSCVnV*,RS?,RS CVn Variable
+RV*,RVTauV*,RV?,RV Tauri Variable
+S*,S*,S*?,S Star
+s*b,BlueSG,s?b,Blue Supergiant
+s*r,RedSG,s?r,Red Supergiant
+s*y,YellowSG,s?y,Yellow Supergiant
+SB*,SB*,SB?,Spectroscopic Binary
+SBG,StarburstG,,Starburst Galaxy
+SCG,SuperClG,SC?,Supercluster of Galaxies
+SFR,StarFormingReg,,Star Forming Region
+sg*,Supergiant,sg?,Evolved Supergiant
+sh,HIshell,,Interstellar Shell
+smm,smmRad,,Sub-Millimetric Source
+SN*,Supernova,SN?,SuperNova
+SNR,SNRemnant,SR?,SuperNova Remnant
+St*,Stream,,Stellar Stream
+SX*,SXPheV*,,SX Phe Variable
+Sy*,Symbiotic*,Sy?,Symbiotic Star
+Sy1,Seyfert1,,Seyfert 1 Galaxy
+Sy2,Seyfert2,,Seyfert 2 Galaxy
+SyG,Seyfert,,Seyfert Galaxy
+TT*,TTauri*,TT?,T Tauri Star
+ULX,ULX,UX?,Ultra-luminous X-ray Source
+UV,UV,,UV-emission Source
+V*,Variable*,V*?,Variable Star
+var,Variable,,Variable source
+vid,Void,,Underdense Region of the Universe
+WD*,WhiteDwarf,WD?,White Dwarf
+WR*,WolfRayet*,WR?,Wolf-Rayet
+WV*,Type2Cep,WV?,Type II Cepheid Variable
+X,X,,X-ray Source
+XB*,XrayBin,XB?,X-ray Binary
+Y*O,YSO,Y*?,Young Stellar Object
