@@ -1,0 +1,27 @@
+.aladin-dark-theme {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.aladin-table {
+  display: none;
+}
+
+.aladin-closeBtn {
+  display: none;
+}
+
+.aladin-popup {
+  padding: 0.5rem;
+  background-color: #1b1b1b;
+  box-shadow: 0 0 0.1rem 0.2rem inset rgba(0, 0, 0, 0.5);
+  border-color: white;
+  border-radius: 0.5rem;
+
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  -webkit-text-stroke-color: rgba(51, 51, 51, 0.75);
+  -webkit-text-stroke-width: 0.25rem;
+  -webkit-text-fill-color: white;
+  paint-order: stroke;
+  text-shadow: 0 0 0.5rem rgba(51, 51, 51, 1);
+}
