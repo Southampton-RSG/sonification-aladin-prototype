@@ -499,7 +499,7 @@ const greek_name_to_unicode = {
 };
 
 
-let synth_mono, synth_metal;
+let synth_parallax, synth_pm;
 
 /*******************************************************************************
  * Select which type of data should be sonified on mouseover. 
@@ -512,6 +512,44 @@ function sonifyVarChanged(input) {
 /** The variable to sonify */
 let sonify_var = "parallax";
 
+
+/*******************************************************************************
+ * Change the volume of the synth objects. 
+ *  
+ * @param {object} input  The selection of data to sonify.
+ *******************************************************************************/
+function sonifyVolumeChanged(input) {
+  console.log(input+' input');
+  volume_adjustment = Number(input.value);
+  console.log('volume: '+volume_adjustment);
+
+  if (volume_adjustment > -1) {
+    Tone.Destination.mute = false;
+    sonify_volume_icon_low.style.display = "block";
+    sonify_volume_icon_off.style.display = "none";
+
+    console.log(Tone.Destination.volume.value);
+
+    Tone.Destination.volume.value = SYNTH_VOLUME_RANGE * volume_adjustment;
+
+  } else {
+    Tone.Destination.mute = true;
+    sonify_volume_icon_low.style.display = "none";
+    sonify_volume_icon_off.style.display = "block";
+  }
+}
+
+/** Icons for low/off volume */
+let sonify_volume_icon_low = document.getElementById("sonifyVolumeLow");
+let sonify_volume_icon_off = document.getElementById("sonifyVolumeOff");
+
+
+/** Sonification volume slider range */
+SYNTH_VOLUME_RANGE = 8;
+
+/** The base volumes for the actual synths, for modification by user scaling */
+SYNTH_VOLUME_BASE_PARALLAX = -15.0;
+SYNTH_VOLUME_BASE_PM = -25.0;
 
 // ----------------
 // Need a user action to initiate the audio, you can't do it automatically
@@ -528,30 +566,30 @@ document.getElementById("startButton").onclick = function() {
   // The inner Synth is the actual instrument, the polysynth is a wrapper to let multiple play at once
   // Settings from: https://tonejs.github.io/examples/monoSynth
   // ----------------
-  synth_mono = new Tone.PolySynth(
-    Tone.MonoSynth, {
-      volume: -8,
-      oscillator: {
-        type: "square8",
-      },
-      envelope: {
-        attack: 0.05,
-        decay: 0.3,
-        sustain: 0.4,
-        release: 0.8,
-      },
-      filterEnvelope: {
-        attack: 0.001,
-        decay: 0.7,
-        sustain: 0.1,
-        release: 0.8,
-        baseFrequency: 300,
-        octaves: 4,
-      }
-    },
-  ).toDestination();
+  // synth_parallax = new Tone.PolySynth(
+  //   Tone.MonoSynth, {
+  //     volume: SYNTH_VOLUME_BASE_PARALLAX,
+  //     oscillator: {
+  //       type: "square8",
+  //     },
+  //     envelope: {
+  //       attack: 0.05,
+  //       decay: 0.3,
+  //       sustain: 0.4,
+  //       release: 0.8,
+  //     },
+  //     filterEnvelope: {
+  //       attack: 0.001,
+  //       decay: 0.7,
+  //       sustain: 0.1,
+  //       release: 0.8,
+  //       baseFrequency: 300,
+  //       octaves: 4,
+  //     }
+  //   },
+  // ).toDestination();
 
-  synth_metal = new Tone.PolySynth(
+  synth_parallax = new Tone.PolySynth(
     Tone.MetalSynth, {
       harmonicity: 12,
       resonance: 800,
@@ -559,7 +597,20 @@ document.getElementById("startButton").onclick = function() {
       envelope: {
         decay: 0.4,
       },
-      volume: -30,
+      volume: SYNTH_VOLUME_BASE_PM,
+    },
+  ).toDestination();
+
+
+  synth_pm = new Tone.PolySynth(
+    Tone.MetalSynth, {
+      harmonicity: 12,
+      resonance: 800,
+      modulationIndex: 20,
+      envelope: {
+        decay: 0.4,
+      },
+      volume: SYNTH_VOLUME_BASE_PM,
     },
   ).toDestination();
 };
@@ -679,14 +730,14 @@ function sonifySource(source) {
     
     switch(sonify_var) {
       case "parallax":
-        synth_mono.triggerAttackRelease(
+        synth_parallax.triggerAttackRelease(
           parallaxToFreq(Number(source_data.parallax)), 
           TIME_BASE_MONO + (TIME_MULT_FLUX * maximum_flux),
         );
         break;
 
       case "pm":
-        synth_metal.triggerAttackRelease(
+        synth_pm.triggerAttackRelease(
           properMotionToFreq(
             Math.sqrt(Number(source_data.pmra)**2 + Number(source_data.pmdec)**2)
           ), 
